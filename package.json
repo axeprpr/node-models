@@ -1,6 +1,6 @@
 {
   "name": "@ninetynine/node-models",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A package that uses lowdb to create interactive models",
   "main": "src/index.js",
   "scripts": {
