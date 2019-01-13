@@ -7,7 +7,7 @@
   <br />
 </h1>
 
-<h5 align="center">A package that uses lowdb[*](#future-drivers) to create interactive models.</h5>
+<h5 align="center">A package that uses lowdb to create interactive models.</h5>
 <p align="center">
   <a href="https://www.npmjs.com/package/@ninetynine/node-models">
     <img src="https://badgen.net/npm/v/@ninetynine/node-models" />
@@ -28,6 +28,44 @@
 * [Installation](#installation)
 * [Initial Setup](#initial-setup)
 * [Usage](#usage)
+  * [Creating](#creating)
+    * [Table](#defining-the-table)
+    * [Primary Key](#defining-the-primary-key)
+    * [Foreign Key](#defining-the-foreign-key)
+    * [Model Relationships](#defining-model-relationships)
+    * [Fillable Attributes](#defining-fillable-attributes)
+    * [Hidden Attributes](#defining-hidden-attributes)
+    * [Setters](#defining-attribute-setters)
+    * [Getters](#defining-attribute-getters)
+  * [Getting and Setting Attributes](#getting-and-setting-attributes)
+    * [Set](#set)
+    * [Get](#get)
+  * [Querying](#querying)
+    * [Find](#find)
+    * [Find Or Create](#find-or-create)
+    * [Where](#where)
+    * [Update](#update)
+    * [Save](#save)
+  * [Utilities](#utilities)
+    * [Model](#model)
+    * [Auto Increment](#auto-increment)
+    * [Identifier](#identifier)
+    * [Next Identifier](#next-identifier)
+    * [Exists](#exists)
+    * [Dirty](#dirty)
+      * [Is Dirty](#is-dirty)
+      * [Set Dirty](#set-dirty)
+      * [Clear Dirty](#clear-dirty)
+    * [Has Attribute](#has-attribute)
+    * [Has Relation](#has-relation)
+    * [Has Getter](#has-getter)
+    * [Has Setter](#has-setter)
+    * [Store](#store)
+      * [Has Store](#has-store)
+      * [Create Store](#create-store)
+    * [Is Fillable](#is-fillable)
+    * [Is Hidden](#is-hidden)
+    * [To Object](#to-object)
 * [FAQ](#faq)
 
 <hr />
@@ -457,6 +495,8 @@ user.update({ first_name: 'anne' })
 ```
 
 <small><i>Compared to calling `set` or `fill` `update` saves to the database after setting the attributes.</i></small>
+
+<hr />
 
 #### Save
 
