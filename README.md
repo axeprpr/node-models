@@ -374,15 +374,6 @@ const user = new User
 user.get('first_name')
 // > John
 
-// An example of directly getting a relation
-user.getRelation('address')
-// > Address
-
-// An example of safely getting all attributes
-user.object
-user.toObject()
-// > { first_name, last_name, email_address }
-
 // An example of unsafely getting an attribute
 user.getRaw('first_name')
 // > john
@@ -390,7 +381,101 @@ user.getRaw('first_name')
 
 <small><i>When safely getting an attribute we check to see if that attribute is set, then if there is a `getter` for that attribute. If no attribute is set then we check the `relations`, after that we return `undefined`. `getRaw` simply returns a key from the internal data object.</i></small>
 
-<small><i>`toObject` and `object` return all the attributes that are not in `hidden` and runs them through optional `getters`.</i></small>
+<hr />
+
+### Querying
+
+#### Find
+
+To find an instance of a model simply call `find`, or pass an ID as the first parameter into the `constructor`:
+
+```js
+// An example of finding an instance of a model
+const user
+
+user = new User
+user.find(1)
+// > Finds user 1
+
+user = new User(2)
+// > Finds user 2
+```
+
+<hr />
+
+#### Find Or Create
+
+To find or create an instance of a model simply call `findOrCreate`, or pass an ID and object into the `constructor`:
+
+```js
+// An example of finding or creating an instance of a model
+const user
+
+user = new User
+user.findOrCreate(3, { first_name: 'anne' })
+// > Creates user 3 and returns instance
+
+user = new User(2, { first_name: 'john' })
+// > Finds user 2
+```
+
+<small><i>`findOrCreate` saves the data to the `store` instantly if not found.</i></small>
+
+<hr />
+
+#### Where
+
+To find multiple, or find a single instance, based on more than just an ID simply call `where`:
+
+```js
+// An example of using where to find an instance of a model
+const user = new User
+
+user.where({ first_name: 'john' })
+// > [ {}, {} ]
+
+user.where({ first_name: 'anne' }, 1)
+// > {}
+```
+
+<small><i>If a limited is passed as the second parameter then results will be returned up until that number. If limit is 1 then a single instance is returned, not inside an array.</i></small>
+
+<hr />
+
+#### Update
+
+To update model attributes simply call `update`:
+
+```js
+// An example of updating attributes
+const user = new User(1)
+// > { first_name: john }
+
+user.update('first_name', 'anne')
+user.update({ first_name: 'anne' })
+// > { first_name: anne }
+```
+
+<small><i>Compared to calling `set` or `fill` `update` saves to the database after setting the attributes.</i></small>
+
+#### Save
+
+To push attributes to the store simply call `save`:
+
+```js
+const user = new User
+
+user.fill({
+  first_name: 'john',
+  last_name: 'doe'
+})
+// > { first_name, last_name }
+
+user.save()
+// > { id, first_name, last_name }
+```
+
+<small><i>If the model already has an ID then the model is updated rather than created. If `autoIncrement` is `false` then a [uuid][uuid] is generated, otherwise it will add one to the previous entry's ID.</i></small>
 
 <hr />
 
@@ -503,7 +588,24 @@ user.isDirty()
 // > true
 ```
 
-##### Set
+##### Is Dirty
+
+To check if an attribute is fillable simply call `isDirty`:
+
+```js
+// An example of checking if an attribute is dirty
+const user = new User
+
+user.set('password', 'coolpassword')
+
+user.isDirty('password')
+// > true
+
+user.isDirty('first_name')
+// > false
+```
+
+##### Set Dirty
 
 To directly set an attribute to be dirty simply call `setDirty`:
 
@@ -520,7 +622,7 @@ user.dirty
 // > true
 ```
 
-##### Clear
+##### Clear Dirty
 
 To directly clean an attribute from being dirty simply call `clearDirty`:
 
@@ -543,6 +645,154 @@ user.dirty
 ```
 
 <small><i>If no attribute is passed into `clearDirty` then all attributes are marked as clean.</i></small>
+
+<hr />
+
+#### Has Attribute
+
+To check if an attribute is set in the internal data simply call `hasAttribute`:
+
+```js
+// An example of checking if an attribute exists directly
+const user = new User
+
+user.hasAttribute('first_name')
+// > false
+
+user.set('first_name', 'john')
+
+user.hasAttribute('first_name')
+// > true
+```
+
+<hr />
+
+#### Has Relation
+
+To check if a relation has been defined simply call `hasRelation`:
+
+```js
+// An example of checking if a relation has been defined
+const user = new User
+
+user.hasRelation('address')
+// > true
+```
+
+<hr />
+
+#### Has Getter
+
+To check if a getter has been defined simply call `hasGetter`:
+
+```js
+// An example of checking if a getter has been defined
+const user = new User
+
+user.hasGetter('first_name')
+// > true
+
+user.hasGetter('email_address')
+// > false
+```
+
+<hr />
+
+#### Has Setter
+
+To check if a setter has been defined simply call `hasSetter`:
+
+```js
+// An example of checking if a setter has been defined
+const user = new User
+
+user.hasSetter('password')
+// > true
+
+user.hasSetter('first_name')
+// > false
+```
+
+<hr />
+
+#### Store
+
+##### Has Store
+
+To check if the store has been defined for a specific model simply call `hasStore`:
+
+```js
+// An example of checking if the store has been defined for a specific model
+const user = new User
+
+user.hasStore()
+// > true
+```
+
+##### Create Store
+
+To create the store for a specific model simply call `createStore`:
+
+```js
+// An example of creating the store for a specific model
+const user = new User
+
+user.createStore()
+```
+
+<small><i>This also will reset the store if it already exists</i></small>
+
+<hr />
+
+#### Is Fillable
+
+To check if an attribute is fillable simply call `isFillable`:
+
+```js
+// An example of checking if an attribute is fillable
+const user = new User
+
+user.isFillable('first_name')
+// > true
+
+user.isFillable('id')
+// > false
+```
+
+<hr />
+
+#### Is Hidden
+
+To check if an attribute is hidden simply call `isHidden`:
+
+```js
+// An example of checking if an attribute is hidden
+const user = new User
+
+user.isHidden('password')
+// > true
+
+user.isHidden('first_name')
+// > false
+```
+
+<hr />
+
+#### To Object
+
+To return an instance of a model as an object simply call `toObject`:
+
+```js
+// > An example of returning a model as an object
+const user = new User(1)
+// > { id, first_name, last_name, email_address, password }
+
+user.object
+user.toObject()
+// > { id, first_name, last_name, email_address }
+```
+
+<small><i>To hide attributes from the object define them in `hidden`. Attributes are ran through `getter`s before being displayed.</i></small>
 
 <hr />
 
