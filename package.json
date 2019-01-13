@@ -1,0 +1,43 @@
+{
+  "name": "@ninetynine/node-models",
+  "version": "1.0.0",
+  "description": "A package that uses lowdb to create interactive models",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "./node_modules/.bin/standard --fix"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ninetynine/node-models.git"
+  },
+  "keywords": [
+    "orm",
+    "node",
+    "models",
+    "db",
+    "local",
+    "schema",
+    "lowdb"
+  ],
+  "author": "Dexter Marks-Barber <dexter@marks-barber.co.uk>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ninetynine/node-models/issues"
+  },
+  "homepage": "https://github.com/ninetynine/node-models#readme",
+  "dependencies": {
+    "lowdb": "^1.0.0",
+    "pluralize": "^7.0.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "husky": "^1.3.1",
+    "standard": "^12.0.1"
+  }
+}
